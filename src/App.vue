@@ -1,21 +1,29 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png" />
+  <img alt="Football" class="sport-icon" src="./assets/football.svg" />
+  <fixture-table class="center" :fixtures="fixtures" />
 </template>
 
 <script>
+import FixtureTable from "./components/FixtureTable";
+
 export default {
   name: "App",
-  components: {}
+  components: {
+    FixtureTable
+  },
+  data: () => ({
+    fixtures: []
+  })
 };
 </script>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+<style scoped>
+.sport-icon {
+  height: 20em;
+  margin: 60px 0 60px 0;
+}
+
+.center {
+  margin: auto;
 }
 </style>
