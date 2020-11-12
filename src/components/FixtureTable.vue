@@ -6,13 +6,23 @@
         <th :colspan="teams.length">AWAY</th>
       </tr>
       <tr>
-        <th v-for="away of teams" :key="away">{{ away }}</th>
+        <th
+          v-for="away of teams"
+          class="table-column vertical-header"
+          :key="away"
+        >
+          <div class="vertical-header-inner">{{ away }}</div>
+        </th>
       </tr>
     </thead>
     <tbody>
       <tr v-for="(home, index) of teams" :key="home">
-        <th v-if="index === 0" class="no-border row-header" :rowspan="teams.length">
-          <div class="row-header-text">HOME</div>
+        <th
+          v-if="index === 0"
+          class="no-border table-row vertical-header"
+          :rowspan="teams.length"
+        >
+          <div class="vertical-header-inner">HOME</div>
         </th>
         <th>{{ home }}</th>
         <td v-for="away of teams.filter((away) => away !== team)" :key="away">
@@ -29,15 +39,15 @@ export default {
   props: {
     fixtures: {
       type: Array,
-      default: () => [],
-    },
+      default: () => []
+    }
   },
   computed: {
     teams: function() {
       return this.fixtures
-        .flatMap((fixture) => [fixture.home, fixture.away])
+        .flatMap((fixture) => [fixture.home.name, fixture.away.name])
         .reduce(this.distinct, []);
-    },
+    }
   },
   methods: {
     distinct: function(acc, curr, index, src) {
@@ -45,35 +55,42 @@ export default {
     },
     result: function(home, away) {
       const results = this.fixtures.filter(
-        (f) => f.home === home && f.away === away
+        (f) => f.home.name === home && f.away.name === away
       );
 
       if (results.length > 0 && results[0]) {
         const fixture = results[0];
 
-        return `${fixture.homeScore} - ${fixture.awayScore}`;
+        return `${fixture.home.score} - ${fixture.away.score}`;
       }
-    },
-  },
+    }
+  }
 };
 </script>
 
 <style scoped>
-.table {
-  color: #2c3e50;
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+.no-border {
+  border: none;
 }
 
-.row-header {
+.vertical-header {
   vertical-align: middle;
 }
 
-.row-header-text {
-  transform: translateY(50%) rotate(-90deg);
+.table-column.vertical-header {
+  height: 9em;
+}
+
+.vertical-header-inner {
+  white-space: nowrap;
   width: 1em;
 }
 
-.no-border {
-  border: none;
+.table-column .vertical-header-inner {
+  transform: translate(50%, 150%) rotate(-45deg);
+}
+
+.table-row .vertical-header-inner {
+  transform: rotate(-90deg);
 }
 </style>

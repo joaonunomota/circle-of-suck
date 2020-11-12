@@ -1,0 +1,20 @@
+export const teams = {
+  498: "Sporting",
+  5613: "SC Braga",
+  1903: "Benfica",
+  503: "FC Porto",
+  496: "Rio Ave",
+  5543: "V. Guimarães",
+  5529: "Nacional",
+  5530: "Santa Clara",
+  5531: "FC Famalicão",
+  507: "Paços de Ferreira",
+  583: "Moreirense",
+  1049: "CD Tondela",
+  5568: "B SAD",
+  5575: "Marítimo",
+  810: "Boavista",
+  5602: "Farense",
+  5533: "Gil Vicente",
+  5601: "Portimonense"
+};
