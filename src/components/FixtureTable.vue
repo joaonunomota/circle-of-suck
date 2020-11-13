@@ -1,9 +1,9 @@
 <template>
-  <table class="table">
+  <table v-if="teams" class="table">
     <thead>
       <tr>
         <th class="no-border" :colspan="2" :rowspan="2"></th>
-        <th :colspan="teams.length">AWAY</th>
+        <th class="no-border" :colspan="teams.length">AWAY</th>
       </tr>
       <tr>
         <th
@@ -11,7 +11,7 @@
           class="table-column vertical-header"
           :key="away"
         >
-          <div class="vertical-header-inner">{{ away }}</div>
+          <div class="header-top vertical-header-inner">{{ away }}</div>
         </th>
       </tr>
     </thead>
@@ -22,14 +22,37 @@
           class="no-border table-row vertical-header"
           :rowspan="teams.length"
         >
-          <div class="vertical-header-inner">HOME</div>
+          <div class="header-left vertical-header-inner">HOME</div>
         </th>
         <th>{{ home }}</th>
         <td v-for="away of teams.filter((away) => away !== team)" :key="away">
           {{ result(home, away) }}
         </td>
+        <th>{{ home }}</th>
+        <th
+          v-if="index === 0"
+          class="no-border table-row vertical-header"
+          :rowspan="teams.length"
+        >
+          <div class="header-right vertical-header-inner">HOME</div>
+        </th>
       </tr>
     </tbody>
+    <tfoot>
+      <tr>
+        <th class="no-border" :colspan="2" :rowspan="2"></th>
+        <th
+          v-for="away of teams"
+          class="table-column vertical-header"
+          :key="away"
+        >
+          <div class="header-bottom vertical-header-inner">{{ away }}</div>
+        </th>
+      </tr>
+      <tr>
+        <th class="no-border" :colspan="teams.length">AWAY</th>
+      </tr>
+    </tfoot>
   </table>
 </template>
 
@@ -37,17 +60,25 @@
 export default {
   name: "fixture-table",
   props: {
+    competition: {
+      type: Number,
+    },
     fixtures: {
       type: Array,
-      default: () => []
-    }
+      default: () => [],
+    },
   },
   computed: {
     teams: function() {
-      return this.fixtures
+      let fixtures = this.fixtures
+        .filter((fixture) => fixture.competitionId === this.competition)
         .flatMap((fixture) => [fixture.home.name, fixture.away.name])
         .reduce(this.distinct, []);
-    }
+
+      fixtures.sort();
+
+      return fixtures;
+    },
   },
   methods: {
     distinct: function(acc, curr, index, src) {
@@ -63,8 +94,8 @@ export default {
 
         return `${fixture.home.score} - ${fixture.away.score}`;
       }
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -86,11 +117,19 @@ export default {
   width: 1em;
 }
 
-.table-column .vertical-header-inner {
+.table-column .header-top.vertical-header-inner {
   transform: translate(50%, 150%) rotate(-45deg);
 }
 
-.table-row .vertical-header-inner {
-  transform: rotate(-90deg);
+.table-column .header-bottom.vertical-header-inner {
+  transform: translate(50%, -150%) rotate(45deg);
+}
+
+.table-row .header-left.vertical-header-inner {
+  transform: translateY(50%) rotate(-90deg);
+}
+
+.table-row .header-right.vertical-header-inner {
+  transform: translateY(-50%) rotate(90deg);
 }
 </style>

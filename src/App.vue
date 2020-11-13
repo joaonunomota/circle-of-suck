@@ -1,7 +1,14 @@
 <template>
+  <vue-dropdown
+    v-if="competitionId"
+    v-model="competitionId"
+    class="margin-bottom"
+    :options="competitions"
+  />
   <fixture-table
-    v-if="fixtures.length > 0"
+    v-if="fixtures && fixtures.length > 0"
     class="center"
+    :competition="competitionId"
     :fixtures="fixtures"
   />
   <p>
@@ -14,35 +21,56 @@
 </template>
 
 <script>
-import FixtureTable from "./components/FixtureTable";
-import primeiraLiga from "./json/primeiraLiga.json";
-import { teams } from "./utils/teams";
+import { FixtureTable, VueDropdown } from "./components";
+import * as json from "./json";
+import { competitions, teams } from "./utils";
 
 export default {
   name: "App",
   components: {
-    FixtureTable
+    FixtureTable,
+    VueDropdown,
   },
-  data: () => ({
-    fixtures: primeiraLiga.matches.map((match) => ({
-      away: {
-        id: match.awayTeam.id,
-        name: teams[match.awayTeam.id],
-        score: match.score.fullTime.awayTeam
-      },
-      home: {
-        id: match.homeTeam.id,
-        name: teams[match.homeTeam.id],
-        score: match.score.fullTime.homeTeam
-      }
-    }))
-  })
+  computed: {
+    competitions: function() {
+      return Object.values(json).map(({ competition }) => ({
+        id: competition.id,
+        name: competitions[competition.id],
+      }));
+    },
+    fixtures: function() {
+      return Object.values(json).flatMap(({ competition, matches }) =>
+        matches.map((match) => ({
+          away: {
+            id: match.awayTeam.id,
+            name: teams[match.awayTeam.id] || match.awayTeam.name,
+            score: match.score.fullTime.awayTeam,
+          },
+          competitionId: competition.id,
+          home: {
+            id: match.homeTeam.id,
+            name: teams[match.homeTeam.id] || match.homeTeam.name,
+            score: match.score.fullTime.homeTeam,
+          },
+        }))
+      );
+    },
+  },
+  created: function() {
+    this.competitionId =
+      this.competitions.length > 0 ? this.competitions[0].id : undefined;
+  },
+  data: function() {
+    return {
+      competitionId: undefined,
+    };
+  },
 };
 </script>
 
 <style scoped>
-.sport-icon {
-  height: 10em;
+.margin-bottom {
+  margin-bottom: 1.5em;
 }
 
 .center {
