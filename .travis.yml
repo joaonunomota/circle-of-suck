@@ -5,7 +5,7 @@ node_js:
 cache: yarn
 
 script:
- - "curl -H \"X-Auth-Token: $FOOTBALL_DATA_TOKEN\" -X GET http://api.football-data.org/v2/competitions/2017/matches > ./src/json/primeiraLiga.json && yarn build"
+ - "curl -H \"X-Auth-Token: $FOOTBALL_DATA_TOKEN\" -X GET http://api.football-data.org/v2/competitions/2017/matches?status=FINISHED > ./src/json/primeiraLiga.json && yarn build"
 
 deploy:
  provider: pages
