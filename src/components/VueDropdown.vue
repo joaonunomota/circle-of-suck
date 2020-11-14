@@ -13,7 +13,7 @@ export default {
   name: "vue-dropdown",
   props: {
     modelValue: {
-     type: Number,
+      type: Number,
     },
     options: {
       type: Array,
@@ -23,12 +23,12 @@ export default {
   computed: {
     value: {
       get() {
-        return this.modelValue
+        return this.modelValue;
       },
       set(value) {
-        this.$emit('update:modelValue', value)
-      }
-    }
-  }
+        this.$emit("update:modelValue", value);
+      },
+    },
+  },
 };
 </script>
