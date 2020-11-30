@@ -1,4 +1,4 @@
-import * as premierLeague from "./premierLeague.json";
-import * as primeiraLiga from "./primeiraLiga.json";
+import premierLeague from "./premierLeague.json";
+import primeiraLiga from "./primeiraLiga.json";
 
 export { primeiraLiga, premierLeague };
