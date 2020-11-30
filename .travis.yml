@@ -6,12 +6,10 @@ cache: yarn
 
 jobs:
   include:
-    - stage: test
-      script: yarn test:unit
-    - stage: data
-      script: "curl -H 'X-Auth-Token: $FOOTBALL_DATA_TOKEN' -X GET http://api.football-data.org/v2/competitions/2017/matches?status=FINISHED > ./src/json/primeiraLiga.json && cat ./src/json/primeiraLiga.json"
-    - script: "curl -H 'X-Auth-Token: $FOOTBALL_DATA_TOKEN' -X GET http://api.football-data.org/v2/competitions/2021/matches?status=FINISHED > ./src/json/premierLeague.json && cat ./src/json/primeiraLiga.json"
+    - script: yarn test:unit
     - stage: deploy
+      before_script: "curl -H \"X-Auth-Token: $FOOTBALL_DATA_TOKEN\" -X GET http://api.football-data.org/v2/competitions/2017/matches?status=FINISHED > ./src/json/primeiraLiga.json && cat ./src/json/primeiraLiga.json"
+    - before_script: "curl -H \"X-Auth-Token: $FOOTBALL_DATA_TOKEN\" -X GET http://api.football-data.org/v2/competitions/2021/matches?status=FINISHED > ./src/json/premierLeague.json && cat ./src/json/primeiraLiga.json"
       script: yarn build
       deploy:
         provider: pages
