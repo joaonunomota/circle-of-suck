@@ -1,0 +1,25 @@
+{
+    "competition": {
+        "id": 2017
+    },
+    "matches": [
+        {
+            "id": 310599,
+            "status": "FINISHED",
+            "score": {
+                "fullTime": {
+                    "homeTeam": 1,
+                    "awayTeam": 5
+                }
+            },
+            "homeTeam": {
+                "id": 5531,
+                "name": "FC Famalicão"
+            },
+            "awayTeam": {
+                "id": 1903,
+                "name": "Sport Lisboa e Benfica"
+            }
+        }
+    ]
+}

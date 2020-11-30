@@ -23,7 +23,7 @@
 <script>
 import { FixtureTable, VueDropdown } from "./components";
 import * as json from "./json";
-import { competitions, teams } from "./utils";
+import { parseCompetitions, parseFixtures } from "./utils";
 
 export default {
   name: "App",
@@ -33,27 +33,10 @@ export default {
   },
   computed: {
     competitions: function() {
-      return Object.values(json).map(({ competition }) => ({
-        id: competition.id,
-        name: competitions[competition.id],
-      }));
+      return parseCompetitions(json);
     },
     fixtures: function() {
-      return Object.values(json).flatMap(({ competition, matches }) =>
-        matches.map((match) => ({
-          away: {
-            id: match.awayTeam.id,
-            name: teams[match.awayTeam.id] || match.awayTeam.name,
-            score: match.score.fullTime.awayTeam,
-          },
-          competitionId: competition.id,
-          home: {
-            id: match.homeTeam.id,
-            name: teams[match.homeTeam.id] || match.homeTeam.name,
-            score: match.score.fullTime.homeTeam,
-          },
-        }))
-      );
+      return parseFixtures(json);
     },
   },
   created: function() {
