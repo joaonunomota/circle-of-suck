@@ -1,4 +1,34 @@
-export const tarjan = function(graph) {
+const distinct = function(acc, curr, index, src) {
+  return src.indexOf(curr) === index ? [...acc, curr] : acc;
+};
+
+export const adjacent = function(graph, vertex) {
+  const edges = graph.edges.filter((edge) => edge[0] === vertex);
+
+  return edges.map((edge) => edge[1]).reduce(distinct, []);
+};
+
+export const toGraph = function(fixtures) {
+  const vertices = fixtures
+    .flatMap((fixture) => [fixture.home.id, fixture.away.id])
+    .reduce(distinct, []);
+
+  const edges = fixtures
+    .map((fixture) => {
+      if (fixture.home.score > fixture.away.score) {
+        return [fixture.home.id, fixture.away.id];
+      } else if (fixture.away.score > fixture.home.score) {
+        return [fixture.away.id, fixture.home.id];
+      } else {
+        return [];
+      }
+    })
+    .filter((edge) => edge.length > 0);
+
+  return { vertices, edges };
+};
+
+export const tarjan = function(vertices) {
   let index = 0;
   let stack = [];
   let components = [];
@@ -18,23 +48,23 @@ export const tarjan = function(graph) {
     }
 
     if (vertex.index === vertex.lowLink) {
-      let vertices = [];
+      let stronglyConnectedVertices = [];
       let stronglyConnectedVertex;
 
       if (stack.length > 0) {
         do {
           stronglyConnectedVertex = stack.pop();
-          vertices.push(stronglyConnectedVertex);
+          stronglyConnectedVertices.push(stronglyConnectedVertex);
         } while (vertex !== stronglyConnectedVertex);
 
-        if (vertices.length > 0) {
-          components.push(vertices.map((v) => v.value));
+        if (stronglyConnectedVertices.length > 0) {
+          components.push(stronglyConnectedVertices.map((v) => v.value));
         }
       }
     }
   };
 
-  for (let vertex of graph.vertices) {
+  for (let vertex of vertices) {
     if (vertex.index === undefined) {
       strongConnect(vertex);
     }

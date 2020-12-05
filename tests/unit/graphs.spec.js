@@ -1,4 +1,4 @@
-import { tarjan } from "../../src/utils";
+import { adjacent, tarjan, toGraph } from "../../src/utils";
 
 let v0 = { value: 0, neighbors: [] },
   v1 = { value: 1, neighbors: [] },
@@ -36,12 +36,92 @@ v11.neighbors.push(v4);
 v11.neighbors.push(v12);
 v12.neighbors.push(v9);
 
-const graph = {
-  vertices: [v0, v1, v2, v3, v4, v5, v6, v7, v8, v9, v10, v11, v12],
-};
+const vertices = [v0, v1, v2, v3, v4, v5, v6, v7, v8, v9, v10, v11, v12];
 
-const expected = [[1], [3, 2, 4, 5, 0], [11, 12, 10, 9], [6], [8, 7]];
+const expectedComponents = [[1], [3, 2, 4, 5, 0], [11, 12, 10, 9], [6], [8, 7]];
 
 test("tarjan", () => {
-  expect(tarjan(graph)).toEqual(expected);
+  expect(tarjan(vertices)).toEqual(expectedComponents);
+});
+
+const fixtures = [
+  {
+    away: {
+      id: 57,
+      name: "Arsenal",
+      score: 3,
+    },
+    competitionId: 2021,
+    home: {
+      id: 63,
+      name: "Fulham",
+      score: 0,
+    },
+  },
+  {
+    away: {
+      id: 57,
+      name: "Arsenal",
+      score: 0,
+    },
+    competitionId: 2021,
+    home: {
+      id: 354,
+      name: "Crystal Palace",
+      score: 1,
+    },
+  },
+  {
+    away: {
+      id: 1903,
+      name: "Benfica",
+      score: 5,
+    },
+    competitionId: 2017,
+    home: {
+      id: 5531,
+      name: "FC Famalicão",
+      score: 1,
+    },
+  },
+];
+
+const expectedGraph = {
+  edges: [
+    [57, 63],
+    [354, 57],
+    [1903, 5531],
+  ],
+  vertices: [63, 57, 354, 5531, 1903],
+};
+
+test("toGraph", () => {
+  expect(toGraph(fixtures)).toEqual(expectedGraph);
+});
+
+const graph = {
+  edges: [
+    [57, 63],
+    [354, 57],
+    [1903, 5531],
+    [57, 63],
+    [1903, 810],
+  ],
+  vertices: [63, 57, 354, 5531, 1903, 810],
+};
+
+const noneExpected = [];
+const oneExpected = [63];
+const someExpected = [5531, 810];
+
+test("adjacent (none)", () => {
+  expect(adjacent(graph, 5531)).toEqual(noneExpected);
+});
+
+test("adjacent (one)", () => {
+  expect(adjacent(graph, 57)).toEqual(oneExpected);
+});
+
+test("adjacent (some)", () => {
+  expect(adjacent(graph, 1903)).toEqual(someExpected);
 });

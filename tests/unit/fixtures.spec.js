@@ -4,7 +4,7 @@ import * as some from "../data/fixtures/some";
 
 const noneExpected = [];
 
-test("parseFixtures", () => {
+test("parseFixtures (none)", () => {
   expect(parseFixtures(none)).toEqual(noneExpected);
 });
 
@@ -50,6 +50,6 @@ const someExpected = [
   },
 ];
 
-test("parseFixtures", () => {
+test("parseFixtures (some)", () => {
   expect(parseFixtures(some)).toEqual(someExpected);
 });

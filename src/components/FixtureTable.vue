@@ -86,6 +86,7 @@ export default {
     },
     result: function(home, away) {
       const results = this.fixtures.filter(
+        // eslint-disable-next-line
         (f) => f.home.name === home && f.away.name === away
       );
 
