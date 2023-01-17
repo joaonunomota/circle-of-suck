@@ -4,9 +4,14 @@ node_js:
 
 cache: yarn
 
+before_install:
+  - sudo apt-get update
+  - sudo apt-get install python3
+
+script: yarn test:unit
+
 jobs:
   include:
-    - script: yarn test:unit
     - stage: deploy
       script:
         - "curl -H \"X-Auth-Token: $FOOTBALL_DATA_TOKEN\" -X GET http://api.football-data.org/v2/competitions/2017/matches?status=FINISHED > ./src/json/primeiraLiga.json"
