@@ -8,17 +8,17 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 export default {
   name: "vue-dropdown",
   props: {
     modelValue: {
-      type: Number,
+      type: Number
     },
     options: {
       type: Array,
-      default: () => [],
-    },
+      default: () => []
+    }
   },
   computed: {
     value: {
@@ -27,8 +27,8 @@ export default {
       },
       set(value) {
         this.$emit("update:modelValue", value);
-      },
-    },
-  },
+      }
+    }
+  }
 };
 </script>

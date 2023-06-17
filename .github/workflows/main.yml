@@ -1,0 +1,48 @@
+name: pages-build-deployment
+
+on:
+  push:
+    branches: [ 'main' ]
+
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - run: npm ci
+
+      - run: |
+          curl -H "X-Auth-Token: $FOOTBALL_DATA_TOKEN" -X GET https://api.football-data.org/v4/competitions/2017/matches?status=FINISHED\&season=2022 > ./src/json/primeira-liga.json
+          curl -H "X-Auth-Token: $FOOTBALL_DATA_TOKEN" -X GET https://api.football-data.org/v4/competitions/2021/matches?status=FINISHED\&season=2022 > ./src/json/premier-league.json
+        env:
+          FOOTBALL_DATA_TOKEN: ${{ secrets.FOOTBALL_DATA_TOKEN }}
+
+      - run: npm run build-only
+
+      - uses: actions/upload-pages-artifact@v1
+        with:
+          path: ./dist
+          
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/deploy-pages@v2

@@ -1,5 +1,5 @@
 <template>
-  <vue-dropdown
+  <simple-dropdown
     v-if="competitionId"
     v-model="competitionId"
     class="margin-bottom"
@@ -13,15 +13,13 @@
   />
   <p>
     {{
-      fixtures.length > 0
-        ? "Football data provided by the Football-Data.org API"
-        : "DATA NOT FOUND"
+      fixtures.length > 0 ? "Football data provided by the Football-Data.org API" : "DATA NOT FOUND"
     }}
   </p>
 </template>
 
-<script>
-import { FixtureTable, VueDropdown } from "./components";
+<script lang="ts">
+import { FixtureTable, SimpleDropdown } from "./components";
 import * as json from "./json";
 import { parseCompetitions, parseFixtures } from "./utils";
 
@@ -29,25 +27,27 @@ export default {
   name: "App",
   components: {
     FixtureTable,
-    VueDropdown,
+    SimpleDropdown
   },
   computed: {
-    competitions: function() {
+    competitions: function () {
       return parseCompetitions(json);
     },
-    fixtures: function() {
+    fixtures: function () {
       return parseFixtures(json);
     },
+    filteredFixtures: function () {
+      return this.fixtures.filter((x) => x.competitionId === this.competitionId)
+    }
   },
-  created: function() {
-    this.competitionId =
-      this.competitions.length > 0 ? this.competitions[0].id : undefined;
+  created: function () {
+    this.competitionId = this.competitions.length > 0 ? this.competitions[0].id : undefined;
   },
-  data: function() {
+  data: function () {
     return {
-      competitionId: undefined,
+      competitionId: undefined
     };
-  },
+  }
 };
 </script>
 
