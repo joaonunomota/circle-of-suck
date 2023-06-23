@@ -9,14 +9,18 @@
 </template>
 
 <script lang="ts">
-export default {
+import { defineComponent } from "vue";
+import type { PropType } from "vue";
+import type { Option } from "../types";
+
+export default defineComponent({
   name: "vue-dropdown",
   props: {
     modelValue: {
       type: Number
     },
     options: {
-      type: Array,
+      type: Array as PropType<Array<Option>>,
       default: () => []
     }
   },
@@ -25,10 +29,10 @@ export default {
       get() {
         return this.modelValue;
       },
-      set(value) {
+      set(value: number) {
         this.$emit("update:modelValue", value);
       }
     }
   }
-};
+});
 </script>

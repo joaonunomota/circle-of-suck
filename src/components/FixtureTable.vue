@@ -17,7 +17,7 @@
           <div class="header-left vertical-header-inner">HOME</div>
         </th>
         <th>{{ home }}</th>
-        <td v-for="away of teams.filter((away) => away !== team)" :key="away">
+        <td v-for="away of teams" :key="away">
           {{ result(home, away) }}
         </td>
         <th>{{ home }}</th>
@@ -41,14 +41,18 @@
 </template>
 
 <script lang="ts">
-export default {
+import { defineComponent } from "vue";
+import type { PropType } from "vue";
+import type { Match } from "../types";
+
+export default defineComponent({
   name: "fixture-table",
   props: {
     competition: {
       type: Number
     },
     fixtures: {
-      type: Array,
+      type: Array as PropType<Array<Match>>,
       default: () => []
     }
   },
@@ -65,10 +69,10 @@ export default {
     }
   },
   methods: {
-    distinct: function (acc, curr, index, src) {
+    distinct: function (acc: Match[], curr: Match, index: number, src: Match[]) {
       return src.indexOf(curr) === index ? [...acc, curr] : acc;
     },
-    result: function (home, away) {
+    result: function (home: string, away: string) {
       const results = this.fixtures.filter(
         // eslint-disable-next-line
         (f) => f.home.name === home && f.away.name === away
@@ -81,7 +85,7 @@ export default {
       }
     }
   }
-};
+});
 </script>
 
 <style scoped>
