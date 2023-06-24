@@ -1,8 +1,8 @@
-import type { Match } from "../types"; 
+import type { Fixture, FixtureDto } from "../types"; 
 
-export const parseFixtures = function(json: object) {
+export const parseFixtures = function(json: object): Fixture[] {
   return Object.values(json).flatMap(({ competition, matches }) =>
-    matches.map((match: Match) => ({
+    matches.map((match: FixtureDto) => ({
       away: {
         id: match.awayTeam.id,
         name: match.awayTeam.shortName,

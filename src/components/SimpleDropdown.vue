@@ -20,7 +20,7 @@ export default defineComponent({
       type: Number
     },
     options: {
-      type: Array as PropType<Array<Option>>,
+      type: Array as PropType<Option[]>,
       default: () => []
     }
   },

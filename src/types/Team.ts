@@ -1,4 +1,6 @@
 export default interface Team {
-  id: number;
-  shortName: string;
-}
+    id: number;
+    name: string;
+    score: number;
+  }
+  

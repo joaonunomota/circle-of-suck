@@ -1,7 +1,9 @@
-import type Match from "./Match";
+import type Fixture from "./Fixture";
+import type FixtureDto from "./FixtureDto";
 import type Option from "./Option";
-import type Score from "./Score";
-import type ScoreTimeline from "./ScoreTimeline";
+import type ScoreDto from "./ScoreDto";
+import type ScoreTimelineDto from "./ScoreTimelineDto";
 import type Team from "./Team";
+import type TeamDto from "./TeamDto";
 
-export type { Match, Option, Score, ScoreTimeline, Team };
+export type { Fixture, FixtureDto, Option, ScoreDto, ScoreTimelineDto, Team, TeamDto };

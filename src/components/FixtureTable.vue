@@ -43,7 +43,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import type { PropType } from "vue";
-import type { Match } from "../types";
+import type { Fixture } from "../types";
 
 export default defineComponent({
   name: "fixture-table",
@@ -52,12 +52,12 @@ export default defineComponent({
       type: Number
     },
     fixtures: {
-      type: Array as PropType<Array<Match>>,
+      type: Array as PropType<Fixture[]>,
       default: () => []
     }
   },
   computed: {
-    teams: function () {
+    teams: function (): string[] {
       let fixtures = this.fixtures
         .filter((fixture) => fixture.competitionId === this.competition)
         .flatMap((fixture) => [fixture.home.name, fixture.away.name])
@@ -69,10 +69,10 @@ export default defineComponent({
     }
   },
   methods: {
-    distinct: function (acc: Match[], curr: Match, index: number, src: Match[]) {
+    distinct: function (acc: string[], curr: string, index: number, src: string[]): string[] {
       return src.indexOf(curr) === index ? [...acc, curr] : acc;
     },
-    result: function (home: string, away: string) {
+    result: function (home: string, away: string): string | null {
       const results = this.fixtures.filter(
         // eslint-disable-next-line
         (f) => f.home.name === home && f.away.name === away
@@ -83,6 +83,8 @@ export default defineComponent({
 
         return `${fixture.home.score} - ${fixture.away.score}`;
       }
+
+      return null;
     }
   }
 });
