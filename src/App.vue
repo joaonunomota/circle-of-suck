@@ -19,15 +19,21 @@
 </template>
 
 <script lang="ts">
+import { defineComponent } from "vue";
 import { FixtureTable, SimpleDropdown } from "./components";
 import * as json from "./json";
 import { parseCompetitions, parseFixtures } from "./utils";
 
-export default {
+export default defineComponent({
   name: "App",
   components: {
     FixtureTable,
     SimpleDropdown
+  },
+  data: function() {
+    return {
+      competitionId: undefined as number | undefined
+    };
   },
   computed: {
     competitions: function () {
@@ -42,13 +48,8 @@ export default {
   },
   created: function () {
     this.competitionId = this.competitions.length > 0 ? this.competitions[0].id : undefined;
-  },
-  data: function () {
-    return {
-      competitionId: undefined
-    };
   }
-};
+});
 </script>
 
 <style scoped>
