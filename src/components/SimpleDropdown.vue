@@ -14,7 +14,7 @@ import type { PropType } from "vue";
 import type { Option } from "../types";
 
 export default defineComponent({
-  name: "vue-dropdown",
+  name: "simple-dropdown",
   props: {
     modelValue: {
       type: Number

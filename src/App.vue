@@ -30,7 +30,7 @@ export default defineComponent({
     FixtureTable,
     SimpleDropdown
   },
-  data: function() {
+  data: function () {
     return {
       competitionId: undefined as number | undefined
     };
