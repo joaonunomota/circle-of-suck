@@ -43,7 +43,7 @@ export default defineComponent({
       return parseFixtures(json);
     },
     filteredFixtures: function () {
-      return this.fixtures.filter((x) => x.competitionId === this.competitionId)
+      return this.fixtures.filter((x) => x.competitionId === this.competitionId);
     }
   },
   created: function () {
