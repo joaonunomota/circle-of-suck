@@ -30,6 +30,8 @@ jobs:
 
       - run: npm ci
 
+      - run: npm run test:unit
+
       - run: |
           curl -H "X-Auth-Token: $FOOTBALL_DATA_TOKEN" -X GET https://api.football-data.org/v4/competitions/2017/matches?status=FINISHED\&season=2022 > ./src/json/primeira-liga.json
           curl -H "X-Auth-Token: $FOOTBALL_DATA_TOKEN" -X GET https://api.football-data.org/v4/competitions/2021/matches?status=FINISHED\&season=2022 > ./src/json/premier-league.json
