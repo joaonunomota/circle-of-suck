@@ -1,31 +1,54 @@
-# circle-of-suck
+# Circle of Suck
 
-This template should help get you started developing with Vue 3 in Vite.
+Circle of Suck visualises the largest chain of negative scorelines for a given season of a competition.
 
-## Recommended IDE Setup
+## Development
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+### Requirements
 
-## Type Support for `.vue` Imports in TS
+- python 3.11
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin) to make the TypeScript language service aware of `.vue` types.
+### Project Setup
 
-If the standalone TypeScript plugin doesn't feel fast enough to you, Volar has also implemented a [Take Over Mode](https://github.com/johnsoncodehk/volar/discussions/471#discussioncomment-1361669) that is more performant. You can enable it by the following steps:
+1. Clone and change to the directory:
 
-1. Disable the built-in TypeScript Extension
-    1) Run `Extensions: Show Built-in Extensions` from VSCode's command palette
-    2) Find `TypeScript and JavaScript Language Features`, right click and select `Disable (Workspace)`
-2. Reload the VSCode window by running `Developer: Reload Window` from the command palette.
+   ```sh
+   git clone https://github.com/joaonunomota/circle-of-suck.git
+   cd circle-of-suck
+   ```
 
-## Customize configuration
+2. Create and activate a virtual environment:
 
-See [Vite Configuration Reference](https://vitejs.dev/config/).
+   Unix based systems: 
+   ```sh
+   virtualenv env
+   source env/bin/activate
+   ```
+   Windows: 
+   ```sh
+   python -m venv env
+   source env/Scripts/activate
+   ```
+   
+3. Install Python and Node requirements:
 
-## Project Setup
+   ```sh
+   pip install -r requirements.txt
+   ```
 
-```sh
-npm install
-```
+   ```sh
+   npm install
+   ```
+
+4. Add data from football-data.org:
+
+   ```sh
+   python fixtures.py -c <competition> -y <year> -p <path> -t <token>
+   ```
+
+   Note: Currently only the following pairs are supported; competition 2017
+   with path "./src/json/premier-league.json" and competition 2021 with path
+   "./src/json/primeira-liga.json".
 
 ### Compile and Hot-Reload for Development
 
