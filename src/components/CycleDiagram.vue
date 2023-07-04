@@ -16,7 +16,7 @@ import { defineComponent } from "vue";
 import type { PropType } from "vue";
 
 export default defineComponent({
-  name: "suck-circle",
+  name: "CycleDiagram",
   props: {
     items: {
       type: Array as PropType<string[]>,

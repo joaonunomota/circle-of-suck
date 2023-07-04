@@ -46,7 +46,7 @@ import type { PropType } from "vue";
 import type { Fixture } from "../types";
 
 export default defineComponent({
-  name: "fixture-table",
+  name: "FixtureTable",
   props: {
     competition: {
       type: Number
