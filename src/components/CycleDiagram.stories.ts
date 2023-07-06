@@ -11,7 +11,7 @@ export default meta;
 
 type Story = StoryObj<typeof CycleDiagram>;
 
-const items: string[] = [
+const cycle: string[] = [
   "AFC Bournemouth",
   "Arsenal",
   "Aston Villa",
@@ -36,6 +36,6 @@ const items: string[] = [
 
 export const Basic: Story = {
   args: {
-    items: items
+    cycle: cycle
   }
 };

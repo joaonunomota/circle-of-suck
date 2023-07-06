@@ -1,4 +1,5 @@
+import CycleDiagram from "./CycleDiagram.vue";
 import FixtureTable from "./FixtureTable.vue";
 import SimpleDropdown from "./SimpleDropdown.vue";
 
-export { FixtureTable, SimpleDropdown };
+export { CycleDiagram, FixtureTable, SimpleDropdown };

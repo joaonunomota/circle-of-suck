@@ -18,14 +18,14 @@ import type { PropType } from "vue";
 export default defineComponent({
   name: "CycleDiagram",
   props: {
-    items: {
+    cycle: {
       type: Array as PropType<string[]>,
       required: true
     }
   },
   computed: {
     interspersedItems: function () {
-      return this.intersperse(this.items, ">");
+      return this.intersperse(this.cycle, ">");
     }
   },
   methods: {
