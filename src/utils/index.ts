@@ -1,4 +1,4 @@
-import { competitions, parseCompetitions } from "./competitions";
-import { parseFixtures } from "./fixtures";
+import { toOption } from "./options";
 
-export { competitions, parseFixtures, parseCompetitions };
+
+export { toOption };

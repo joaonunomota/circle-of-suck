@@ -40,13 +40,19 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - run: python fixtures.py -c 2017 -s 2022 -p ./src/json/primeira-liga.json
+      - run: python competitions.py update -c 2013 -s 2022 -p ./src/data
         env:
           FOOTBALL_DATA_TOKEN: ${{ secrets.FOOTBALL_DATA_TOKEN }}
 
-      - run: python fixtures.py -c 2021 -s 2022 -p ./src/json/premier-league.json
+      - run: python competitions.py update -c 2017 -s 2022 -p ./src/data
         env:
           FOOTBALL_DATA_TOKEN: ${{ secrets.FOOTBALL_DATA_TOKEN }}
+
+      - run: python competitions.py update -c 2021 -s 2022 -p ./src/data
+        env:
+          FOOTBALL_DATA_TOKEN: ${{ secrets.FOOTBALL_DATA_TOKEN }}
+
+      - run: python competitions.py index -p ./src/data
 
       - run: npm run build
 

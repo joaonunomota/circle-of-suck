@@ -15,9 +15,9 @@ export const WithOptions: Story = {
   args: {
     modelValue: 0,
     options: [
-      { id: 0, name: "Option 1" },
-      { id: 1, name: "Option 2" },
-      { id: 2, name: "Option 3" }
+      { value: 0, name: "Option 1" },
+      { value: 1, name: "Option 2" },
+      { value: 2, name: "Option 3" }
     ]
   },
   // @ts-ignore

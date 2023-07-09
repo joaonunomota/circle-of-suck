@@ -1,28 +1,32 @@
 <template>
   <simple-dropdown
-    v-if="competitionId"
-    v-model="competitionId"
-    class="margin-bottom"
+    v-if="competition"
+    v-model="competition"
+    class="dropdown-spacing"
     :options="competitions"
+  />
+  <simple-dropdown
+    v-if="season"
+    v-model="season"
+    class="dropdown-spacing"
+    :disabled="seasons.length <= 1"
+    :options="seasons"
   />
   <fixture-table
     v-if="fixtures && fixtures.length > 0"
     class="center"
-    :competition="competitionId"
     :fixtures="fixtures"
+    :teams="teams"
   />
-  <p>
-    {{
-      fixtures.length > 0 ? "Football data provided by the Football-Data.org API" : "DATA NOT FOUND"
-    }}
-  </p>
+  <p>{{ disclaimer }}</p>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
 import { FixtureTable, SimpleDropdown } from "./components";
-import * as json from "./json";
-import { parseCompetitions, parseFixtures } from "./utils";
+import { competitions, seasons } from "./data";
+import type { Competition, Fixture, Option, Team } from "./types";
+import { toOption } from "./utils";
 
 export default defineComponent({
   name: "App",
@@ -32,29 +36,71 @@ export default defineComponent({
   },
   data: function () {
     return {
-      competitionId: undefined as number | undefined
+      competition: null as number | null,
+      competitions: competitions,
+      fixtures: [] as Fixture[],
+      loading: false,
+      season: null as number | null,
+      seasons: [] as Option<number>[],
+      teams: [] as Team[]
     };
   },
   computed: {
-    competitions: function () {
-      return parseCompetitions(json);
-    },
-    fixtures: function () {
-      return parseFixtures(json);
-    },
-    filteredFixtures: function () {
-      return this.fixtures.filter((x) => x.competitionId === this.competitionId);
+    disclaimer: function () {
+      return this.fixtures.length > 0
+        ? "Football data provided by the Football-Data.org API"
+        : "DATA NOT FOUND";
     }
   },
-  created: function () {
-    this.competitionId = this.competitions.length > 0 ? this.competitions[0].id : undefined;
+  watch: {
+    competition: async function (competition: number | null) {
+      if (!competition) return;
+
+      this.seasons = competition ? seasons[competition].map((s) => toOption(s)) : [];
+
+      if (this.seasons.some((s) => s.value === this.season)) {
+        await this.load(competition, this.season as number);
+      } else if (this.seasons.length > 0) {
+        this.season = this.seasons[0].value;
+      }
+    },
+    season: async function (season: number | null) {
+      if (!season) return;
+
+      await this.load(this.competition as number, season);
+    }
+  },
+  methods: {
+    load: async function (competition: number, season: number) {
+      try {
+        this.loading = true;
+
+        const response: Competition = await import(`./data/${competition}-${season}.json`);
+
+        this.teams = response.teams;
+        this.fixtures = response.fixtures;
+      } catch (error) {
+        this.loading = false;
+
+        this.teams = [];
+        this.fixtures = [];
+      }
+    }
+  },
+  created: async function () {
+    this.competition = this.competitions.length > 0 ? this.competitions[0].value : null;
+    this.season = this.seasons.length > 0 ? this.seasons[0].value : null;
+
+    if (this.competition && this.season) {
+      await this.load(this.competition, this.season);
+    }
   }
 });
 </script>
 
 <style scoped>
-.margin-bottom {
-  margin-bottom: 1.5em;
+.dropdown-spacing {
+  margin: 0 1em 1.5em 1em;
 }
 
 .center {

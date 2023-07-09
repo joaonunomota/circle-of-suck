@@ -11,54 +11,77 @@ export default meta;
 
 type Story = StoryObj<typeof FixtureTable>;
 
+const partialFixtures = [
+  {
+    homeScore: 2,
+    homeTeam: 1,
+    awayScore: 1,
+    awayTeam: 2
+  },
+  {
+    homeScore: 1,
+    homeTeam: 2,
+    awayScore: 1,
+    awayTeam: 1
+  }
+];
+
 const fixtures = [
+  ...partialFixtures,
   {
-    competitionId: 1,
-    home: { id: 1, name: "Team A", score: 2 },
-    away: { id: 2, name: "Team B", score: 1 }
+    homeScore: 3,
+    homeTeam: 1,
+    awayScore: 0,
+    awayTeam: 3
   },
   {
-    competitionId: 1,
-    home: { id: 1, name: "Team A", score: 3 },
-    away: { id: 3, name: "Team C", score: 0 }
+    homeScore: 0,
+    homeTeam: 2,
+    awayScore: 2,
+    awayTeam: 3
   },
   {
-    competitionId: 1,
-    home: { id: 2, name: "Team B", score: 1 },
-    away: { id: 1, name: "Team A", score: 1 }
+    homeScore: 2,
+    homeTeam: 3,
+    awayScore: 0,
+    awayTeam: 1
   },
   {
-    competitionId: 1,
-    home: { id: 2, name: "Team B", score: 0 },
-    away: { id: 3, name: "Team C", score: 2 }
+    homeScore: 2,
+    homeTeam: 3,
+    awayScore: 1,
+    awayTeam: 2
+  }
+];
+
+const teams = [
+  {
+    id: 1,
+    shortName: "Team A",
+    tla: "A"
   },
   {
-    competitionId: 1,
-    home: { id: 3, name: "Team C", score: 2 },
-    away: { id: 1, name: "Team A", score: 0 }
+    id: 2,
+    shortName: "Team B",
+    tla: "B"
   },
   {
-    competitionId: 1,
-    home: { id: 3, name: "Team C", score: 2 },
-    away: { id: 2, name: "Team B", score: 1 }
-  },
-  {
-    competitionId: 2,
-    home: { id: 4, name: "Team D", score: 1 },
-    away: { id: 5, name: "Team E", score: 1 }
+    id: 3,
+    shortName: "Team C",
+    tla: "C"
   }
 ];
 
 export const CompleteSeason: Story = {
   args: {
-    competition: 1,
-    fixtures: fixtures
+    fixtures: fixtures,
+    teams: teams
   }
 };
 
 export const PartialSeason: Story = {
   args: {
-    competition: 2,
-    fixtures: fixtures
+    fixtures: partialFixtures,
+    teams: teams
   }
 };

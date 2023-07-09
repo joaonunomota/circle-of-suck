@@ -1,7 +1,7 @@
 <template>
   <div class="select">
-    <select v-model="value">
-      <option v-for="option of options" :key="option.id" :value="option.id">
+    <select v-model="value" :disabled="disabled">
+      <option v-for="option of options" :key="option.value" :value="option.value">
         {{ option.name }}
       </option>
     </select>
@@ -19,8 +19,12 @@ export default defineComponent({
     modelValue: {
       type: Number
     },
+    disabled: {
+      type: Boolean,
+      default: false
+    },
     options: {
-      type: Array as PropType<Option[]>,
+      type: Array as PropType<Option<number>[]>,
       default: () => []
     }
   },

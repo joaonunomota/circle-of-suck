@@ -4,9 +4,9 @@ import SimpleDropdown from "../SimpleDropdown.vue";
 
 describe("SimpleDropdown", () => {
   const options = [
-    { id: 1, name: "Option 1" },
-    { id: 2, name: "Option 2" },
-    { id: 3, name: "Option 3" }
+    { value: 1, name: "Option 1" },
+    { value: 2, name: "Option 2" },
+    { value: 3, name: "Option 3" }
   ];
 
   it("renders the options correctly", () => {
@@ -22,7 +22,7 @@ describe("SimpleDropdown", () => {
 
     options.forEach((option, index) => {
       expect(selectOptions[index].text()).toBe(option.name);
-      expect(selectOptions[index].attributes("value")).toBe(option.id.toString());
+      expect(selectOptions[index].attributes("value")).toBe(option.value.toString());
     });
   });
 
@@ -34,30 +34,30 @@ describe("SimpleDropdown", () => {
     });
 
     const select = wrapper.find("select");
-    await select.setValue(options[1].id);
+    await select.setValue(options[1].value);
 
     const emittedEvents = wrapper.emitted("update:modelValue");
 
     expect(emittedEvents && emittedEvents.length).toBe(1);
-    expect(emittedEvents && emittedEvents[0][0]).toBe(options[1].id);
+    expect(emittedEvents && emittedEvents[0][0]).toBe(options[1].value);
   });
 
   it("binds the selected value correctly", async () => {
     const wrapper = mount(SimpleDropdown, {
       props: {
-        modelValue: options[1].id,
+        modelValue: options[1].value,
         options
       }
     });
 
     const select = wrapper.find("select");
-    expect(select.element.value).toBe(options[1].id.toString());
+    expect(select.element.value).toBe(options[1].value.toString());
 
-    await select.setValue(options[2].id);
+    await select.setValue(options[2].value);
 
     const emittedEvents = wrapper.emitted("update:modelValue");
 
     expect(emittedEvents && emittedEvents.length).toBe(1);
-    expect(emittedEvents && emittedEvents[0][0]).toBe(options[2].id);
+    expect(emittedEvents && emittedEvents[0][0]).toBe(options[2].value);
   });
 });

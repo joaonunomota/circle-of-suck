@@ -6,21 +6,21 @@
         <th class="no-border has-text-centered" :colspan="teams.length">AWAY</th>
       </tr>
       <tr>
-        <th v-for="away of teams" class="table-column vertical-header" :key="away">
-          <div class="header-top vertical-header-inner">{{ away }}</div>
+        <th v-for="away of teams" class="table-column vertical-header" :key="away.id">
+          <div class="header-top vertical-header-inner">{{ away.shortName }}</div>
         </th>
       </tr>
     </thead>
     <tbody>
-      <tr v-for="(home, index) of teams" :key="home">
+      <tr v-for="(home, index) of teams" :key="home.id">
         <th v-if="index === 0" class="no-border table-row vertical-header" :rowspan="teams.length">
           <div class="header-left vertical-header-inner">HOME</div>
         </th>
-        <th>{{ home }}</th>
-        <td v-for="away of teams" :key="away">
-          {{ result(home, away) }}
+        <th>{{ home.shortName }}</th>
+        <td v-for="away of teams" :key="away.id">
+          {{ result(home.id, away.id) }}
         </td>
-        <th>{{ home }}</th>
+        <th>{{ home.shortName }}</th>
         <th v-if="index === 0" class="no-border table-row vertical-header" :rowspan="teams.length">
           <div class="header-right vertical-header-inner">HOME</div>
         </th>
@@ -29,8 +29,8 @@
     <tfoot>
       <tr>
         <th class="no-border" :colspan="2" :rowspan="2"></th>
-        <th v-for="away of teams" class="table-column vertical-header" :key="away">
-          <div class="header-bottom vertical-header-inner">{{ away }}</div>
+        <th v-for="away of teams" class="table-column vertical-header" :key="away.id">
+          <div class="header-bottom vertical-header-inner">{{ away.shortName }}</div>
         </th>
       </tr>
       <tr>
@@ -43,45 +43,28 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import type { PropType } from "vue";
-import type { Fixture } from "../types";
+import type { Fixture, Team } from "../types";
 
 export default defineComponent({
   name: "FixtureTable",
   props: {
-    competition: {
-      type: Number
-    },
     fixtures: {
       type: Array as PropType<Fixture[]>,
       default: () => []
-    }
-  },
-  computed: {
-    teams: function (): string[] {
-      let fixtures = this.fixtures
-        .filter((fixture) => fixture.competitionId === this.competition)
-        .flatMap((fixture) => [fixture.home.name, fixture.away.name])
-        .reduce(this.distinct, []);
-
-      fixtures.sort();
-
-      return fixtures;
+    },
+    teams: {
+      type: Array as PropType<Team[]>,
+      default: () => []
     }
   },
   methods: {
-    distinct: function (acc: string[], curr: string, index: number, src: string[]): string[] {
-      return src.indexOf(curr) === index ? [...acc, curr] : acc;
-    },
-    result: function (home: string, away: string): string | null {
-      const results = this.fixtures.filter(
-        // eslint-disable-next-line
-        (f) => f.home.name === home && f.away.name === away
-      );
+    result: function (home: number, away: number): string | null {
+      const results = this.fixtures.filter((f) => f.homeTeam === home && f.awayTeam === away);
 
       if (results.length > 0 && results[0]) {
         const fixture = results[0];
 
-        return `${fixture.home.score} - ${fixture.away.score}`;
+        return `${fixture.homeScore} - ${fixture.awayScore}`;
       }
 
       return null;
