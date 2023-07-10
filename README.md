@@ -42,8 +42,16 @@ Circle of Suck visualises the largest chain of negative scorelines for a given s
 
 4. Add data from football-data.org:
 
+   Fetch data for the desired competitions and seasons.
+
    ```sh
-   python competitions.py -c <competition> -y <year> -p <path> -t <token>
+   python competitions.py update -c <competition> -y <year> -p <path> -t <token>
+   ```
+
+   Generate an index file once all the data is fetched.
+
+   ```sh
+   python competitions.py index -p <path>
    ```
 
 ### Compile and Hot-Reload for Development
