@@ -6,18 +6,18 @@
         <th class="no-border has-text-centered" :colspan="teams.length">AWAY</th>
       </tr>
       <tr>
-        <th v-for="away of teams" class="table-column vertical-header" :key="away.id">
+        <th v-for="away of sortedTeams" class="table-column vertical-header" :key="away.id">
           <div class="header-top vertical-header-inner">{{ away.shortName }}</div>
         </th>
       </tr>
     </thead>
     <tbody>
-      <tr v-for="(home, index) of teams" :key="home.id">
+      <tr v-for="(home, index) of sortedTeams" :key="home.id">
         <th v-if="index === 0" class="no-border table-row vertical-header" :rowspan="teams.length">
           <div class="header-left vertical-header-inner">HOME</div>
         </th>
         <th>{{ home.shortName }}</th>
-        <td v-for="away of teams" :key="away.id">
+        <td v-for="away of sortedTeams" :key="away.id">
           {{ result(home.id, away.id) }}
         </td>
         <th>{{ home.shortName }}</th>
@@ -29,7 +29,7 @@
     <tfoot>
       <tr>
         <th class="no-border" :colspan="2" :rowspan="2"></th>
-        <th v-for="away of teams" class="table-column vertical-header" :key="away.id">
+        <th v-for="away of sortedTeams" class="table-column vertical-header" :key="away.id">
           <div class="header-bottom vertical-header-inner">{{ away.shortName }}</div>
         </th>
       </tr>
@@ -55,6 +55,13 @@ export default defineComponent({
     teams: {
       type: Array as PropType<Team[]>,
       default: () => []
+    }
+  },
+  computed: {
+    sortedTeams: function () {
+      return this.teams
+        .slice()
+        .sort((a, b) => (a.shortName < b.shortName ? -1 : a.shortName === b.shortName ? 0 : 1));
     }
   },
   methods: {
