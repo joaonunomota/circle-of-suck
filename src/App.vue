@@ -61,7 +61,7 @@ export default defineComponent({
       if (this.seasons.some((s) => s.value === this.season)) {
         await this.load(competition, this.season as number);
       } else if (this.seasons.length > 0) {
-        this.season = this.seasons[0].value;
+        this.season = this.seasons[this.seasons.length - 1].value;
       }
     },
     season: async function (season: number | null) {
