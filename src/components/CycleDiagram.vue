@@ -32,12 +32,12 @@ export default defineComponent({
     getCircleStyle: function (index: number) {
       const angle = (2 * Math.PI) / this.interspersedItems.length;
 
-      const radius = 25;
+      const radius = 35;
       const translateX = radius * Math.cos(angle * index);
       const translateY = radius * Math.sin(angle * index);
 
       return {
-        transform: `translate(${translateX}vw, ${translateY}vw)`
+        transform: `translate(calc(${translateX} * min(1vw, 1vh)), calc(${translateY} * min(1vw, 1vh)))`
       };
     },
     getContentStyle: function (index: number) {
@@ -73,16 +73,10 @@ export default defineComponent({
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 50vw;
+  height: 100%;
 }
 
 .circle {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: 20vw;
-  height: 20vw;
   position: absolute;
   overflow: visible;
 }

@@ -37,5 +37,6 @@ const cycle: string[] = [
 export const Basic: Story = {
   args: {
     cycle: cycle
-  }
+  },
+  decorators: [() => ({ template: "<div style=\"height: 75vh;\"><story/></div>" })]
 };
