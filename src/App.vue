@@ -56,7 +56,9 @@ export default defineComponent({
     competition: async function (competition: number | null) {
       if (!competition) return;
 
-      this.seasons = competition ? seasons[competition].map((s) => toOption(s)) : [];
+      this.seasons = competition
+        ? seasons[competition].map((s) => toOption(s)).sort((a, b) => (a > b ? 1 : -1))
+        : [];
 
       if (this.seasons.some((s) => s.value === this.season)) {
         await this.load(competition, this.season as number);
