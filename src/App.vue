@@ -56,14 +56,14 @@ export default defineComponent({
     competition: async function (competition: number | null) {
       if (!competition) return;
 
-      this.seasons = competition
-        ? seasons[competition].map((s) => toOption(s)).sort((a, b) => (a > b ? 1 : -1))
-        : [];
+      this.seasons = seasons[competition]
+        .map((s) => toOption(s))
+        .sort((a, b) => (a.value < b.value ? 1 : -1));
 
       if (this.seasons.some((s) => s.value === this.season)) {
         await this.load(competition, this.season as number);
       } else if (this.seasons.length > 0) {
-        this.season = this.seasons[this.seasons.length - 1].value;
+        this.season = this.seasons[0].value;
       }
     },
     season: async function (season: number | null) {
