@@ -1,47 +1,54 @@
 <template>
-  <simple-dropdown
-    v-if="competition"
-    v-model="competition"
-    class="dropdown-spacing"
-    :options="competitions"
-  />
-  <simple-dropdown
-    v-if="season"
-    v-model="season"
-    class="dropdown-spacing"
-    :disabled="seasons.length <= 1"
-    :options="seasons"
-  />
-  <fixture-table
-    v-if="fixtures && fixtures.length > 0"
-    class="center"
-    :fixtures="fixtures"
-    :teams="teams"
-  />
-  <p>{{ disclaimer }}</p>
+  <section>
+    <simple-dropdown
+      v-if="competition"
+      v-model="competition"
+      class="input-spacing"
+      :options="competitions"
+    />
+    <simple-dropdown
+      v-if="season"
+      v-model="season"
+      class="input-spacing"
+      :disabled="seasons.length <= 1"
+      :options="seasons"
+    />
+    <simple-button class="input-spacing" @click="toggle">Toggle</simple-button>
+  </section>
+  <section class="is-flex-grow-1">
+    <cycle-diagram v-if="showCycle" class="center" :cycle="cycle" />
+    <fixture-table v-else class="center" :fixtures="fixtures" :teams="teams" />
+  </section>
+  <footer>
+    <p>{{ disclaimer }}</p>
+  </footer>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import { FixtureTable, SimpleDropdown } from "./components";
+import { CycleDiagram, FixtureTable, SimpleButton, SimpleDropdown } from "./components";
 import { competitions, seasons } from "./data";
 import type { Competition, Fixture, Option, Team } from "./types";
-import { toOption } from "./utils";
+import { toCycle, toOption } from "./utils";
 
 export default defineComponent({
   name: "App",
   components: {
+    CycleDiagram,
     FixtureTable,
+    SimpleButton,
     SimpleDropdown
   },
   data: function () {
     return {
       competition: null as number | null,
       competitions: competitions,
+      cycle: [] as string[],
       fixtures: [] as Fixture[],
       loading: false,
       season: null as number | null,
       seasons: [] as Option<number>[],
+      showCycle: false,
       teams: [] as Team[]
     };
   },
@@ -65,11 +72,19 @@ export default defineComponent({
       } else if (this.seasons.length > 0) {
         this.season = this.seasons[0].value;
       }
+
+      if (this.showCycle) {
+        this.refreshCycle();
+      }
     },
     season: async function (season: number | null) {
       if (!season) return;
 
       await this.load(this.competition as number, season);
+
+      if (this.showCycle) {
+        this.refreshCycle();
+      }
     }
   },
   methods: {
@@ -87,6 +102,19 @@ export default defineComponent({
         this.teams = [];
         this.fixtures = [];
       }
+    },
+    toggle: function () {
+      this.showCycle = !this.showCycle;
+
+      if (this.showCycle) {
+        this.refreshCycle();
+      }
+    },
+    refreshCycle: function () {
+      this.cycle =
+        toCycle(this.teams, this.fixtures)?.map(
+          (x) => this.teams.find((y) => y.id === x)?.shortName || x.toString()
+        ) || [];
     }
   },
   created: async function () {
@@ -101,7 +129,7 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.dropdown-spacing {
+.input-spacing {
   margin: 0 1em 1.5em 1em;
 }
 

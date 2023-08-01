@@ -1,4 +1,5 @@
+import { toCycle } from "./cycle";
 import { toOption } from "./options";
 
 
-export { toOption };
+export { toCycle, toOption };
