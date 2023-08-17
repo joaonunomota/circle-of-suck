@@ -1,5 +1,5 @@
 <template>
-  <div class="circle-container">
+  <div v-if="hasCycle" class="circle-container">
     <div
       v-for="(item, index) in interspersedItems"
       :key="index"
@@ -9,6 +9,7 @@
       <div class="content" :style="getContentStyle(index)">{{ item }}</div>
     </div>
   </div>
+  <div class="circle-container" v-else>no circle of suck :(</div>
 </template>
 
 <script lang="ts">
@@ -26,6 +27,9 @@ export default defineComponent({
   computed: {
     interspersedItems: function () {
       return this.intersperse(this.cycle, ">");
+    },
+    hasCycle: function () {
+      return this.cycle.length > 0;
     }
   },
   methods: {
