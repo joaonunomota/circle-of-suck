@@ -6,7 +6,10 @@
       :style="getCircleStyle(index)"
       class="circle"
     >
-      <div class="content" :style="getContentStyle(index)">{{ item }}</div>
+      <div class="content" :style="getContentStyle(index)">
+        <span class="large">{{ item.shortName }}</span>
+        <span class="small">{{ item.tla }}</span>
+      </div>
     </div>
   </div>
   <div class="circle-container" v-else>no circle of suck :(</div>
@@ -15,12 +18,13 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import type { PropType } from "vue";
+import type { Team } from "../types";
 
 export default defineComponent({
   name: "CycleDiagram",
   props: {
     cycle: {
-      type: Array as PropType<string[]>,
+      type: Array as PropType<Team[]>,
       required: true
     }
   },
@@ -56,14 +60,14 @@ export default defineComponent({
         transform: `rotate(${rotate}deg)`
       };
     },
-    intersperse(array: string[], value: string) {
+    intersperse(array: Team[], seperator: string) {
       if (array.length === 0) {
         return array;
       }
 
       const result = [];
       for (let i = 0; i < array.length; i++) {
-        result.push(array[i], value);
+        result.push(array[i], { id: -i, shortName: seperator, tla: seperator });
       }
 
       return result;
@@ -88,5 +92,23 @@ export default defineComponent({
 .arrow {
   position: absolute;
   top: 50%;
+}
+
+.content .small {
+  display: none;
+}
+
+.content .large {
+  display: inline;
+}
+
+@media (max-height: 40em) or (max-width: 40em) {
+  .content .small {
+    display: inline;
+  }
+
+  .content .large {
+    display: none;
+  }
 }
 </style>

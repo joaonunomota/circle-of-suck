@@ -43,7 +43,7 @@ export default defineComponent({
     return {
       competition: null as number | null,
       competitions: competitions,
-      cycle: [] as string[],
+      cycle: [] as Team[],
       fixtures: [] as Fixture[],
       loading: false,
       season: null as number | null,
@@ -110,11 +110,12 @@ export default defineComponent({
         this.refreshCycle();
       }
     },
+    toTeam(id: number) {
+      const team = this.teams.find((team) => team.id === id);
+      return team || { id: id, shortName: id.toString(), tla: id.toString() };
+    },
     refreshCycle: function () {
-      this.cycle =
-        toCycle(this.teams, this.fixtures)?.map(
-          (x) => this.teams.find((y) => y.id === x)?.shortName || x.toString()
-        ) || [];
+      this.cycle = toCycle(this.teams, this.fixtures)?.map(this.toTeam) || [];
     }
   },
   created: async function () {
