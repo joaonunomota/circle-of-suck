@@ -6,12 +6,15 @@ import requests
 
 URL = "https://api.football-data.org/v4/competitions/{}/matches?status=FINISHED&season={}"
 
-def update_fixtures(competition, season, token, path):
+def update_fixtures(competition, season, token, path, verbose):
     endpoint = URL.format(competition, season)
     headers = {"X-Auth-Token": token}
 
     response = requests.get(endpoint, headers=headers)
     if response.status_code == 200:
+        if (verbose):
+            print("Debug: API returns 200.")
+
         json_data = response.json()
         simplified_data = {
             "id": competition,
@@ -57,8 +60,13 @@ def update_fixtures(competition, season, token, path):
 
         with open(file_path, "w", encoding="UTF-8") as file:
             json.dump(simplified_data, file)
+
         return True
     else:
+        if (verbose):
+            print("Debug: API returns " + response.status_code)
+            print(response)
+
         return False
 
 def generate_index_file(path):
@@ -102,11 +110,12 @@ def generate_index_file(path):
     return True
 
 parser = argparse.ArgumentParser()
-parser.add_argument("command", choices=["update", "help", "index"], help="Command to execute")
-parser.add_argument("-c", "--competition", type=int)
-parser.add_argument("-s", "--season", type=int)
-parser.add_argument("-t", "--token", type=str, default=os.getenv("FOOTBALL_DATA_TOKEN"))
-parser.add_argument("-p", "--path", type=str, default="")
+parser.add_argument("command", choices=["update", "help", "index"], help="the command to execute")
+parser.add_argument("-c", "--competition", type=int, help="the competition id")
+parser.add_argument("-s", "--season", type=int, help="the season start year")
+parser.add_argument("-t", "--token", type=str, default=os.getenv("FOOTBALL_DATA_TOKEN"), help="the api token")
+parser.add_argument("-p", "--path", type=str, default="", help="the output path")
+parser.add_argument("-v", "--verbose", action="store_true", help="include debug logs")
 args = parser.parse_args()
 
 if args.command == "update":
@@ -115,12 +124,17 @@ if args.command == "update":
         parser.print_help()
         sys.exit(1)
 
-    SUCCESS = update_fixtures(args.competition, args.season, args.token, args.path)
+    if args.token is None or args.token == "":
+        print("Error: Missing or invalid token.")
+        parser.print_help()
+        sys.exit(1)
+
+    SUCCESS = update_fixtures(args.competition, args.season, args.token, args.path, args.verbose)
     if SUCCESS:
-        print("Success")
+        print("Info: Success")
         sys.exit(0)
     else:
-        print("Failure")
+        print("Info: Failure")
         sys.exit(1)
 
 elif args.command == "index":
@@ -131,10 +145,10 @@ elif args.command == "index":
     
     SUCCESS = generate_index_file(args.path)
     if SUCCESS:
-        print("Success")
+        print("Info: Success")
         sys.exit(0)
     else:
-        print("Failure")
+        print("Info: Failure")
         sys.exit(1)
 
 elif args.command == "help":
