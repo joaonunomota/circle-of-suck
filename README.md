@@ -12,7 +12,7 @@ Circle of Suck visualises the largest chain of negative scorelines for a given s
 
 1. Clone and change to the directory:
 
-   ```sh
+   ```
    git clone https://github.com/joaonunomota/circle-of-suck.git
    cd circle-of-suck
    ```
@@ -20,14 +20,14 @@ Circle of Suck visualises the largest chain of negative scorelines for a given s
 2. Create and activate a virtual environment:
 
    Unix based systems: 
-   ```sh
+   ```
    virtualenv env
    source env/bin/activate
    ```
    Windows: 
-   ```sh
-   python -m venv env
-   source env/Scripts/activate
+   ```
+   py -m venv env
+   .\env\Scripts\activate
    ```
    
 3. Install Python and Node requirements:
@@ -45,7 +45,7 @@ Circle of Suck visualises the largest chain of negative scorelines for a given s
    Fetch data for the desired competitions and seasons.
 
    ```sh
-   python competitions.py update -c <competition> -y <year> -p <path> -t <token>
+   python competitions.py update -c <competition> -s <season> -p <path> -t <token>
    ```
 
    Generate an index file once all the data is fetched.
