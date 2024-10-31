@@ -52,6 +52,10 @@ jobs:
         env:
           FOOTBALL_DATA_TOKEN: ${{ secrets.FOOTBALL_DATA_TOKEN }}
 
+      - run: python competitions.py update -c 2013 -s 2024 -p ./src/data
+        env:
+          FOOTBALL_DATA_TOKEN: ${{ secrets.FOOTBALL_DATA_TOKEN }}
+
       - run: python competitions.py update -c 2017 -s 2021 -p ./src/data
         env:
           FOOTBALL_DATA_TOKEN: ${{ secrets.FOOTBALL_DATA_TOKEN }}
@@ -64,6 +68,10 @@ jobs:
         env:
           FOOTBALL_DATA_TOKEN: ${{ secrets.FOOTBALL_DATA_TOKEN }}
 
+      - run: python competitions.py update -c 2017 -s 2024 -p ./src/data
+        env:
+          FOOTBALL_DATA_TOKEN: ${{ secrets.FOOTBALL_DATA_TOKEN }}
+
       - run: python competitions.py update -c 2021 -s 2021 -p ./src/data
         env:
           FOOTBALL_DATA_TOKEN: ${{ secrets.FOOTBALL_DATA_TOKEN }}
@@ -73,6 +81,10 @@ jobs:
           FOOTBALL_DATA_TOKEN: ${{ secrets.FOOTBALL_DATA_TOKEN }}
 
       - run: python competitions.py update -c 2021 -s 2023 -p ./src/data
+        env:
+          FOOTBALL_DATA_TOKEN: ${{ secrets.FOOTBALL_DATA_TOKEN }}
+
+      - run: python competitions.py update -c 2021 -s 2024 -p ./src/data
         env:
           FOOTBALL_DATA_TOKEN: ${{ secrets.FOOTBALL_DATA_TOKEN }}
 
