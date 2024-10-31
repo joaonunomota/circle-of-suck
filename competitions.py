@@ -65,7 +65,7 @@ def update_fixtures(competition, season, token, path, verbose):
     else:
         if (verbose):
             print("Debug: API returns " + str(response.status_code))
-            print(response)
+            print(response.json())
 
         return False
 
